@@ -1,5 +1,3 @@
-const auth = require('../config/firebase');
-const { createUserWithEmailAndPassword } = require('firebase/auth');
 
 async function signupEmail(email, password, callback) {
     try {

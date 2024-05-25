@@ -1,12 +1,26 @@
-const { auth } = require('../config/firebase');
+const auth = require('../config/firebase');
 const { signInWithEmailAndPassword } = require('firebase/auth');
 
-async function loginEmail(email, password) {
+async function loginEmail(email, password, callback) {
     try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        return userCredential;
+        await signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            callback ({
+                'uid': userCredential.user.uid,
+                'email': userCredential.user.email
+            })
+        })
+        .catch((error) => {
+            callback ({
+                'status': 'fail',
+                'message': 'Terjadi kesalahan silahkan cek kembali email dan password anda'
+            });
+        });
     } catch (error) {
-        return error;
+        callback ({
+            'status': 'fail',
+            'message': 'Terjadi kesalahan silahkan cek kembali email dan password anda'
+        });
     }
 }
 

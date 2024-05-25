@@ -24,3 +24,4 @@ async function signupEmail(email, password, callback) {
     }
 }
 module.exports = signupEmail;
+

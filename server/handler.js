@@ -43,6 +43,7 @@ async function getWord(word) {
     }
 }
 
+// function Login And Fetch User Progress
 async function loginUser(email, password){
     try{
         const userCredential = await loginEmail(email, password);

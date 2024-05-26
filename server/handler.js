@@ -91,3 +91,4 @@ async function signupUser(email, password, username){
 }
 
 module.exports = { getWord, loginUser, signupUser };
+

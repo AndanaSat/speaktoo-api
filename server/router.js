@@ -3,6 +3,7 @@ const router = express.Router();
 const getWord = require('./handler');
 const signupEmail = require('../services/signupEmail');
 const loginEmail = require('../services/loginEmail');
+const { postUserProgress, getUserProgress } = require('../services/sqlServices')
 
 router.get('/', (req, res) => {
     res.send('Hello World!');
@@ -11,15 +12,14 @@ router.get('/', (req, res) => {
 router.get('/word/:word', async (req, res) => {
     let { word } = req.params;
     try{
-        await getWord(word, (data) => {
-            res.status(200);
+        const data = await getWord(word)
+        res.status(200);
 
-            if(data.status === 'fail'){
-                res.status(404);
-            }
+        if(data.status === 'fail'){
+            res.status(404);
+        }
 
-            res.send(data);
-        });
+        res.send(data);
     }
     catch(error){
         res.send({
@@ -32,39 +32,49 @@ router.get('/word/:word', async (req, res) => {
 router.post('/email/login', async (req, res)=>{
     let { email, password } = req.body;
     try{
-        await loginEmail(email, password, (userCredential) => {
-            res.send({
+        const userCredential = await loginEmail(email, password);
+        await getUserProgress(userCredential.uid, (callback) => {
+            res.status(200).send({
                 status: 'success',
                 message: 'Login berhasil',
-                data: userCredential
-            }).status(200);
+                data: {
+                    'uid': userCredential.uid,
+                    'email': userCredential.email,
+                    'username': callback.username,
+                    'progress': callback.progress 
+                }
+            });
         })
-    } catch (error) {
-        res.send({
-            'status': 'fail',
-            'message': 'Terjadi kesalahan silahkan cek kembali email dan password anda'
-        }).status(404);
-        console.log(error)
+    }catch(error){
+        console.error(error);
+        res.status(400).send({
+          status: 'fail',
+          message: 'Terjadi kesalahan silahkan cek kembali email dan password anda'
+        });
     }
 })
 
 router.post('/email/signup', async (req, res)=>{
-    let email = req.body.email;
-    let password = req.body.password;
-
-    try {
-        await signupEmail(email, password, (userCredential) => {
+    let { email, password, username } = req.body;
+    try{
+        const userCredential = await signupEmail(email, password) 
+        await postUserProgress(userCredential.uid, username, (callback) => {
             res.send({
                 status: 'success',
                 message: 'Signup berhasil',
-                data: userCredential
+                data: {
+                    'uid': userCredential.uid,
+                    'email': userCredential.email,
+                    'username': callback
+                }
             }).status(200);
         })
-    } catch (error) {
-        res.status(400).send({ // Use 400 for bad request (e.g., invalid email)
+    }catch (error) {
+        console.log(error)
+        res.send({
             status: 'fail',
-            message: error.message || 'Signup failed' // Provide informative message
-        });
+            message: error.message || 'Signup failed'
+        }).status(400);
     }
 })
 

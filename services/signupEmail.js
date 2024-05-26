@@ -1,26 +1,20 @@
 const auth = require('../config/firebase');
 const { createUserWithEmailAndPassword } = require('firebase/auth');
 
-async function signupEmail(email, password, callback) {
+async function signupEmail(email, password) {
     try {
-        await createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            callback({
-                'uid': userCredential.user.uid,
-                'email': userCredential.user.email
-            })
-        })
-        .catch((error) => {
-            callback ({
-                'status': 'fail',
-                'message': error.message || 'Signup failed'
-            });
-        })
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        console.log(userCredential.user.uid)
+        return {
+            'uid': userCredential.user.uid,
+            'email': userCredential.user.email
+        };
     } catch (error) {
-        callback ({
+        console.log(error.message)
+        return {
             'status': 'fail',
-            'message': error.message || 'Signup failed'
-        });
+            'message': error.message
+        };
     }
 }
 module.exports = signupEmail;

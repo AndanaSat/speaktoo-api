@@ -1,9 +1,10 @@
 const axios = require('axios');
 
-async function getWord(word, callback) {
+async function getWord(word) {
     let url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word;
-    await axios.get(url)
-    .then((response) => {
+
+    try{
+        const response = await axios.get(url)
         const data = response.data;
 
         data.forEach((element) => {
@@ -19,7 +20,8 @@ async function getWord(word, callback) {
                 }
             })
         });
-        callback({
+
+        return {
             'status': 'success',
             'message': 'berhasil get',
             'data': {
@@ -27,14 +29,15 @@ async function getWord(word, callback) {
                 'meaning': definition,
                 'audio': audio
             }
-        });
-    })
-    .catch((error) => {
-        callback({
+        }
+    }
+    catch(error) {
+        console.log(error);
+        return {
             'status': 'fail',
             'message': 'gagal get word'
-        });
-    });
+        }
+    }
 }
 
 module.exports = getWord;

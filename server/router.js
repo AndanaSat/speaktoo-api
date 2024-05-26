@@ -3,7 +3,6 @@ const router = express.Router();
 const { getWord, loginUser, signupUser } = require('./handler');
 const signupEmail = require('../services/signupEmail');
 const loginEmail = require('../services/loginEmail');
-const { postUserProgress, getUserProgress } = require('../services/sqlServices')
 
 router.get('/', (req, res) => {
     res.send('Hello World!');

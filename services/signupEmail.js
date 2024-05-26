@@ -4,7 +4,6 @@ const { createUserWithEmailAndPassword } = require('firebase/auth');
 async function signupEmail(email, password) {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        console.log(userCredential.user.uid)
         return {
             'uid': userCredential.user.uid,
             'email': userCredential.user.email
@@ -18,4 +17,3 @@ async function signupEmail(email, password) {
     }
 }
 module.exports = signupEmail;
-

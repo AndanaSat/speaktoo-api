@@ -19,12 +19,11 @@ router.get('/word/:word', async (req, res) => {
         }
 
         res.send(data);
-    }
-    catch(error){
+    }catch (error) {
         res.send({
             'status': 'fail',
-            'message': 'Gagal get word'
-        }).status(404);
+            'message': 'Harap maklum'
+        }).status(500);
     }
 })
 
@@ -39,12 +38,12 @@ router.post('/email/login', async (req, res)=>{
         }
 
         res.send(data);
-    }catch(error){
+    } catch (error){
         console.error(error);
         res.send({
           status: 'fail',
-          message: 'Terjadi kesalahan silahkan cek kembali email dan password anda'
-        }).status(404);
+          message: 'Harap maklum'
+        }).status(500);
     }
 })
 
@@ -60,12 +59,12 @@ router.post('/email/signup', async (req, res)=>{
 
         res.send(data);
 
-    }catch (error) {
-        console.log(error)
+    } catch (error) {
+        console.log(error);
         res.send({
             status: 'fail',
-            message: 'Signup failed'
-        }).status(400);
+            message: 'Harap maklum'
+        }).status(500);
     }
 })
 

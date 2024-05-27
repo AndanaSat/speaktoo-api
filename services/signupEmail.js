@@ -9,11 +9,8 @@ async function signupEmail(email, password) {
             'email': userCredential.user.email
         };
     } catch (error) {
-        console.log(error.message)
-        return {
-            'status': 'fail',
-            'message': error.message
-        };
+        console.log(error.message);
+        return 'fail';
     }
 }
 module.exports = signupEmail;

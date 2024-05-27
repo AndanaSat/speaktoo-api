@@ -9,19 +9,15 @@ async function getWord(word) {
     try{
         const response = await axios.get(url);
         const data = response.data;
-
-        data.forEach((element) => {
-            word = element.word;
-            element.phonetics.forEach((phonetic) => {
-                if(phonetic.audio != ''){
-                    audio = phonetic.audio
-                }
-            });
-            element.meanings.forEach((meaning) => {
-                if(meaning.partOfSpeech === 'noun'){
-                    definition = meaning.definitions[0].definition;
-                }
-            });
+        
+        let word = data[0].word;
+        let audio = 'maaf audio tidak tersedia';
+        let definition = data[0].meanings;
+        
+        data[0].phonetics.forEach((phonetic) => {
+            if(phonetic.audio != ''){
+                audio = phonetic.audio
+            }
         });
 
         return {
@@ -48,6 +44,14 @@ async function loginUser(email, password){
     try{
         const userCredential = await loginEmail(email, password);
         const userCredentialSQL = await getUserProgress(userCredential.uid);
+
+        if(userCredential === 'fail' || userCredentialSQL === 'fail' ){
+            return {
+                'status': 'fail',
+                'message': 'Signup failed, silahkan cek kembali email dan password anda'
+            };
+        }
+
         return {
             status: 'success',
             message: 'Login berhasil',
@@ -72,20 +76,27 @@ async function signupUser(email, password, username){
         const userCredential = await signupEmail(email, password);
         const userCredentialSQL = await postUserProgress(userCredential.uid, username);
 
+        if(userCredential === 'fail' || userCredentialSQL === 'fail' ){
+            return {
+                'status': 'fail',
+                'message': 'Signup failed, silahkan cek kembali email dan password anda'
+            };
+        }
+
         return {
             "status": "success",
             "message": "Signup berhasil",
             "data": {
                 'uid': userCredential.uid,
                 'email': userCredential.email,
-                'username': username
+                'username': userCredentialSQL.username
             }
         };
     } catch (error) {
         console.log(error);
         return {
-            status: 'fail',
-            message: 'Signup failed'
+            'status': 'fail',
+            'message': 'Signup failed, silahkan cek kembali email dan password anda'
         };
     }
 }

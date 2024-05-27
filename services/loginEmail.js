@@ -7,13 +7,10 @@ async function loginEmail(email, password) {
         return {
             'uid': userCredential.user.uid,
             'email': userCredential.user.email
-        }
-    } catch (error) {
-        console.log(error.message)
-        return {
-            'status': 'fail',
-            'message': 'Terjadi kesalahan silahkan cek kembali email dan password anda'
         };
+    } catch (error) {
+        console.log(error.message);
+        return 'fail';
     }
 }
 

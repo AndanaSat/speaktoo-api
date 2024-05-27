@@ -1,7 +1,7 @@
 const axios = require('axios');
 const signupEmail = require('../services/signupEmail');
 const loginEmail = require('../services/loginEmail');
-const { postUserProgress, getUserProgress } = require('../services/sqlServices')
+const { postUserProgress, getUserProgress, updateUserProgress } = require('../services/sqlServices')
 
 async function getWord(word) {
     let url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word;
@@ -53,13 +53,13 @@ async function loginUser(email, password){
         }
 
         return {
-            status: 'success',
-            message: 'Login berhasil',
-            data: {
+            'status': 'success',
+            'message': 'Login berhasil',
+            'data': {
                 'uid': userCredential.uid,
                 'email': userCredential.email,
-                'username': userCredentialSQL[0].username,
-                'progress': userCredentialSQL[0].progress 
+                'username': userCredentialSQL.username,
+                'progress': userCredentialSQL.progress 
             }
         };
     }catch(error){
@@ -101,5 +101,34 @@ async function signupUser(email, password, username){
     }
 }
 
-module.exports = { getWord, loginUser, signupUser };
+async function updateProgress(user_id, progress){
+    try {
+        const result = await updateUserProgress(user_id, progress);
+
+        if(result === 'fail'){
+            return {
+                'status': 'fail',
+                'message': 'gagal update progress'
+            };
+        }
+
+        return {
+            'status' : 'success',
+	        'message' : 'berhasil update progress',
+	        'data' : {
+	            'uid' : result.user_id,
+	            'progress' : result.progress
+            }
+        };
+
+    } catch (error) {
+        console.log(error);
+        return {
+            'status': 'fail',
+            'message': 'gagal update progress'
+        }        
+    }
+}
+
+module.exports = { getWord, loginUser, signupUser, updateProgress};
 

@@ -1,14 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { getWord, loginUser, signupUser } = require('./handler');
-const signupEmail = require('../services/signupEmail');
-const loginEmail = require('../services/loginEmail');
+const { getWord, loginUser, signupUser, updateProgress } = require('./handler');
 
 router.get('/', (req, res) => {
     res.send('Hello World!');
 })
 
-router.get('/word/:word', async (req, res) => {
+router.get('/words/:word', async (req, res) => {
     let { word } = req.params;
     try{
         const data = await getWord(word)
@@ -41,8 +39,8 @@ router.post('/email/login', async (req, res)=>{
     } catch (error){
         console.error(error);
         res.send({
-          status: 'fail',
-          message: 'Harap maklum'
+          'status': 'fail',
+          'message': 'Harap maklum'
         }).status(500);
     }
 })
@@ -58,12 +56,32 @@ router.post('/email/signup', async (req, res)=>{
         }
 
         res.send(data);
-
     } catch (error) {
         console.log(error);
         res.send({
-            status: 'fail',
-            message: 'Harap maklum'
+            'status': 'fail',
+            'message': 'Harap maklum'
+        }).status(500);
+    }
+})
+
+router.put('/user/progress', async (req, res) => {
+    let user_id = req.body.uid;
+    let progress = req.body.progress;
+    try {
+        const data = await updateProgress(user_id, progress);
+        res.status(200);
+
+        if(data.status === 'fail'){
+            res.status(400);
+        }
+
+        res.send(data);
+    } catch (error) {
+        console.log(error);
+        res.send({
+            'status': 'fail',
+            'message': 'harap maklum'
         }).status(500);
     }
 })

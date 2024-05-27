@@ -23,4 +23,19 @@ async function getUserProgress(user_id){
     
 }
 
-module.exports = { postUserProgress, getUserProgress };
+async function updateUserProgress(user_id, progress){
+    try {
+        const sql = 'UPDATE user_progress SET progress = ? WHERE user_id = ?';
+        await db.query(sql, [progress, user_id]);
+        const result = {
+            user_id,
+            progress
+        };
+        return result;
+    } catch (error) {
+        console.log(error.message);
+        return 'fail';
+    }
+}
+
+module.exports = { postUserProgress, getUserProgress, updateUserProgress };

@@ -38,4 +38,16 @@ async function updateUserProgress(user_id, progress){
     }
 }
 
-module.exports = { postUserProgress, getUserProgress, updateUserProgress };
+async function getWordsByDifficulty(user_id, difficulty){
+    try {
+        const sql = 'SELECT words.word, COALESCE(user_logs.completed, 0) AS completed FROM user_logs RIGHT JOIN words ON words.word = user_logs.word WHERE user_logs.user_id = ? AND words.word_type = ?';
+        const result = db.query(sql, [user_id, difficulty]);
+        console.log(result);
+        return result;
+    } catch (error) {
+        console.log(error);
+        return 'fail';
+    }
+}
+
+module.exports = { postUserProgress, getUserProgress, updateUserProgress, getWordsByDifficulty };

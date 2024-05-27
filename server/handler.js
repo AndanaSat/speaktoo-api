@@ -1,7 +1,7 @@
 const axios = require('axios');
 const signupEmail = require('../services/signupEmail');
 const loginEmail = require('../services/loginEmail');
-const { postUserProgress, getUserProgress, updateUserProgress } = require('../services/sqlServices')
+const { postUserProgress, getUserProgress, updateUserProgress, getWordsByDifficulty } = require('../services/sqlServices')
 
 async function getWord(word) {
     let url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word;
@@ -39,7 +39,6 @@ async function getWord(word) {
     }
 }
 
-// function Login And Fetch User Progress
 async function loginUser(email, password){
     try{
         const userCredential = await loginEmail(email, password);
@@ -130,5 +129,32 @@ async function updateProgress(user_id, progress){
     }
 }
 
-module.exports = { getWord, loginUser, signupUser, updateProgress};
+async function getWords(user_id, difficulty) {
+    try {
+        const result = await getWordsByDifficulty(user_id, difficulty);
+
+        if(result === 'fail') {
+            return {
+                'status': 'fail',
+                'message': 'gagal get words by difficulty'
+            };
+        }
+
+        return {
+            'status' : 'success',
+	        'message' : 'berhasil get words by difficulty',
+	        'data' : {
+	            result
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            'status': 'fail',
+            'message': 'gagal get words by difficulty'
+        }   
+    }
+}
+
+module.exports = { getWord, loginUser, signupUser, updateProgress, getWords };
 

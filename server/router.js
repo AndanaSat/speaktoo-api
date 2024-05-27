@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { getWord, loginUser, signupUser, updateProgress } = require('./handler');
+const { getWord, loginUser, signupUser, updateProgress, getWords } = require('./handler');
 
 router.get('/', (req, res) => {
     res.send('Hello World!');
 })
 
-router.get('/words/:word', async (req, res) => {
+router.get('/word/:word', async (req, res) => {
     let { word } = req.params;
     try{
         const data = await getWord(word)
@@ -85,6 +85,27 @@ router.put('/user/progress', async (req, res) => {
         }).status(500);
     }
 })
+
+router.get('/words/:difficulty', async(req, res) => {
+    let user_id = req.body.uid;
+    let { difficulty } = req.params;
+    try {
+        const data = await getWords(user_id, difficulty);
+        res.status(200);
+
+        if(data.status === 'fail'){
+            res.status(404);
+        }
+
+        res.send(data);
+    } catch (error) {
+        console.log(error);
+        res.send({
+            'status': 'fail',
+            'message': 'harap maklum'
+        }).status(500);
+    }
+}) 
 
 module.exports = router;
 

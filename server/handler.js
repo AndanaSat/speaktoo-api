@@ -54,7 +54,7 @@ async function loginUser(email, password){
         if(userCredential === 'fail' || userCredentialSQL === 'fail' ){
             return {
                 'status': 'fail',
-                'message': 'Signup failed, silahkan cek kembali email dan password anda'
+                'message': 'Login failed, silahkan cek kembali email dan password anda'
             };
         }
 

@@ -3,10 +3,10 @@ const db = require('../config/sqlConfig');
 async function postUserProgress(user_id, username, callback){
     try {
         const sql = 'INSERT INTO user_progress (user_id, username) VALUES (?, ?)';
-        const [result] = await db.query(sql, [user_id, username]);
+        await db.query(sql, [user_id, username]);
         return username;
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         return 'fail';
     }
 }
@@ -17,7 +17,7 @@ async function getUserProgress(user_id){
         const [result] = await db.query(sql, [user_id]);
         return result[0];
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         return 'fail';
     }
     
@@ -33,14 +33,14 @@ async function updateUserProgress(user_id, progress){
         };
         return result;
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         return 'fail';
     }
 }
 
 async function getWords(difficulty){
     try {
-        const sql = 'SELECT word FROM WORDS WHERE word_type = ?'
+        const sql = 'SELECT words.word_id, word FROM WORDS WHERE word_type = ?'
         const [result] = await db.query(sql, [difficulty]);
         return result;
     } catch (error) {
@@ -60,4 +60,15 @@ async function getCompletedWords(user_id, difficulty){
     }
 }
 
-module.exports = { postUserProgress, getUserProgress, updateUserProgress, getWords, getCompletedWords };
+async function postUserLogs(user_id, word_id){
+    try {
+        const sql = 'INSERT INTO user_logs (user_id, word_id, completed) VALUES (?, ?, ?)';
+        await db.query(sql, [user_id, word_id, 1]);
+        return 'behasil post logs';
+    } catch (error) {
+        console.log(error);
+        return 'fail';
+    }
+}
+
+module.exports = { postUserProgress, getUserProgress, updateUserProgress, getWords, getCompletedWords, postUserLogs };

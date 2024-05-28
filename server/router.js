@@ -4,8 +4,7 @@ const {
     getWord, 
     loginUser, 
     signupUser, 
-    updateProgress, 
-    getWords, 
+    updateProgress,  
     getWordsByDifficulty, 
     postLogs 
 } = require('./handler');

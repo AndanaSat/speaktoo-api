@@ -13,25 +13,7 @@ router.get('/', (req, res) => {
     res.send('Hello World!');
 })
 
-router.get('/word/:word', async (req, res) => {
-    let { word } = req.params;
-    try{
-        const data = await getWord(word)
-        res.status(200);
-
-        if(data.status === 'fail'){
-            res.status(404);
-        }
-
-        res.send(data);
-    }catch (error) {
-        res.send({
-            'status': 'fail',
-            'message': 'Harap maklum'
-        }).status(500);
-    }
-})
-
+// User Progress and Authentication
 router.post('/email/login', async (req, res)=>{
     let { email, password } = req.body;
     try{
@@ -93,6 +75,26 @@ router.put('/user/progress', async (req, res) => {
     }
 })
 
+// Function APPS
+router.get('/word/:word', async (req, res) => {
+    let { word } = req.params;
+    try{
+        const data = await getWord(word)
+        res.status(200);
+
+        if(data.status === 'fail'){
+            res.status(404);
+        }
+
+        res.send(data);
+    }catch (error) {
+        res.send({
+            'status': 'fail',
+            'message': 'Harap maklum'
+        }).status(500);
+    }
+})
+
 router.get('/words/:difficulty', async(req, res) => {
     let user_id = req.body.uid;
     let { difficulty } = req.params;
@@ -114,6 +116,7 @@ router.get('/words/:difficulty', async(req, res) => {
     }
 })
 
+// User Logs
 router.post('/user/logs', async(req, res) => {
     let user_id = req.body.uid;
     let word_id = req.body.wid;

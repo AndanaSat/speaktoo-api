@@ -178,7 +178,7 @@ async function postLogs(user_id, word_id){
         if(result === 'fail'){
             return {
                 'status': 'fail',
-                'message': 'gagal update progress'
+                'message': 'gagal post logs'
             };
         }
 
@@ -196,5 +196,5 @@ async function postLogs(user_id, word_id){
     }
 }
 
-module.exports = { getWord, loginUser, signupUser, updateProgress, getWordsByDifficulty,postLogs };
+module.exports = { getWord, loginUser, signupUser, updateProgress, getWordsByDifficulty, postLogs };
 

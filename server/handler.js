@@ -1,13 +1,14 @@
 const axios = require('axios');
 const signupEmail = require('../services/signupEmail');
 const loginEmail = require('../services/loginEmail');
+const forgetPassword = require('../services/forgetPassword');
 const { 
     postUserProgress, 
     getUserProgress, 
     updateUserProgress, 
     getWords, 
     getCompletedWords, 
-    postUserLogs 
+    postUserLogs
 } = require('../services/sqlServices')
 
 async function getWord(word) {
@@ -196,5 +197,29 @@ async function postLogs(user_id, word_id){
     }
 }
 
-module.exports = { getWord, loginUser, signupUser, updateProgress, getWordsByDifficulty, postLogs };
+async function userForgetPassword(email) {
+    try {
+        const result = await forgetPassword(email);
+
+        if(result === 'fail'){
+            return {
+                'status': 'fail',
+                'message': 'mohon cek kembali format email anda'
+            };
+        }
+
+        return {
+            'status': 'success',
+	        'message': result
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            'status': 'fail',
+            'message': 'mohon cek kembali format email anda'
+        };
+    }
+}
+
+module.exports = { getWord, loginUser, signupUser, updateProgress, getWordsByDifficulty, postLogs, userForgetPassword };
 

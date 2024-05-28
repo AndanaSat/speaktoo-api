@@ -6,7 +6,8 @@ const {
     signupUser, 
     updateProgress,  
     getWordsByDifficulty, 
-    postLogs 
+    postLogs, 
+    userForgetPassword
 } = require('./handler');
 
 router.get('/', (req, res) => {
@@ -123,6 +124,25 @@ router.post('/user/logs', async(req, res) => {
 
     try {
         const data = await postLogs(user_id, word_id);
+
+        if(data.status === 'fail'){
+            res.status(400);
+        }
+
+        res.send(data);
+    } catch (error) {
+        console.log(error);
+        res.send({
+            'status': 'fail',
+            'message': 'harap maklum'
+        }).status(500);
+    }
+})
+
+router.post('/email/forpas', async (req, res) => {
+    let { email } = req.body;
+    try {
+        const data = await userForgetPassword(email);
 
         if(data.status === 'fail'){
             res.status(400);

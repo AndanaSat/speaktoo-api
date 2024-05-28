@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getWord, loginUser, signupUser, updateProgress, getWords } = require('./handler');
+const { getWord, loginUser, signupUser, updateProgress, getWords, getWordsByDifficulty } = require('./handler');
 
 router.get('/', (req, res) => {
     res.send('Hello World!');
@@ -90,7 +90,7 @@ router.get('/words/:difficulty', async(req, res) => {
     let user_id = req.body.uid;
     let { difficulty } = req.params;
     try {
-        const data = await getWords(user_id, difficulty);
+        const data = await getWordsByDifficulty(user_id, difficulty);
         res.status(200);
 
         if(data.status === 'fail'){

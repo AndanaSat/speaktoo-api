@@ -1,7 +1,7 @@
 const axios = require('axios');
 const signupEmail = require('../services/signupEmail');
 const loginEmail = require('../services/loginEmail');
-const { postUserProgress, getUserProgress, updateUserProgress, getWordsByDifficulty } = require('../services/sqlServices')
+const { postUserProgress, getUserProgress, updateUserProgress, getWords, getCompletedWords } = require('../services/sqlServices')
 
 async function getWord(word) {
     let url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word;
@@ -88,7 +88,7 @@ async function signupUser(email, password, username){
             "data": {
                 'uid': userCredential.uid,
                 'email': userCredential.email,
-                'username': userCredentialSQL.username
+                'username': userCredentialSQL
             }
         };
     } catch (error) {
@@ -129,23 +129,34 @@ async function updateProgress(user_id, progress){
     }
 }
 
-async function getWords(user_id, difficulty) {
+async function getWordsByDifficulty(user_id, difficulty) {
     try {
-        const result = await getWordsByDifficulty(user_id, difficulty);
+        const words = await getWords(difficulty);
+        const completedWords = await getCompletedWords(user_id, difficulty);
 
-        if(result === 'fail') {
+        console.log(words)
+        console.log(completedWords)
+
+        if(words === 'fail' || completedWords === 'fail') {
             return {
                 'status': 'fail',
                 'message': 'gagal get words by difficulty'
             };
         }
 
+        const result = [];
+        words.forEach(item => {
+            const found = completedWords.find(element => element.word === item.word);
+            const completed = found ? found.completed : 0;
+            result.push({ ...item, completed });
+        });
+
+        console.log(result);
+
         return {
             'status' : 'success',
 	        'message' : 'berhasil get words by difficulty',
-	        'data' : {
-	            result
-            }
+	        'data' : result
         }
     } catch (error) {
         console.log(error);
@@ -156,5 +167,5 @@ async function getWords(user_id, difficulty) {
     }
 }
 
-module.exports = { getWord, loginUser, signupUser, updateProgress, getWords };
+module.exports = { getWord, loginUser, signupUser, updateProgress, getWordsByDifficulty };
 

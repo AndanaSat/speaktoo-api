@@ -8,7 +8,8 @@ const {
     updateUserProgress, 
     getWords, 
     getCompletedWords, 
-    postUserLogs
+    postUserLogs,
+    editUserUsername
 } = require('../services/sqlServices')
 
 async function getWord(word) {
@@ -221,5 +222,39 @@ async function userForgetPassword(email) {
     }
 }
 
-module.exports = { getWord, loginUser, signupUser, updateProgress, getWordsByDifficulty, postLogs, userForgetPassword };
+async function editUsername(user_id, username) {
+    try {
+        const result = await editUserUsername(user_id, username);
+
+        if(result === 'fail'){
+            return {
+                'status': 'fail',
+                'message': 'mohon cek kembail akun anda'
+            }
+        }
+
+        return {
+            'status': 'success',
+            'message': 'berhasil mengganti username',
+            'data': result
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            'status': 'fail',
+            'message': 'mohon cek kembail akun anda'
+        };
+    }
+}
+
+module.exports = { 
+    getWord, 
+    loginUser, 
+    signupUser, 
+    updateProgress, 
+    getWordsByDifficulty, 
+    postLogs, 
+    userForgetPassword,
+    editUsername
+};
 

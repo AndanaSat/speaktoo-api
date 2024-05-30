@@ -71,4 +71,23 @@ async function postUserLogs(user_id, word_id){
     }
 }
 
-module.exports = { postUserProgress, getUserProgress, updateUserProgress, getWords, getCompletedWords, postUserLogs };
+async function editUserUsername (user_id, username){
+    try {
+        const sql = 'UPDATE user_progress SET username = ? WHERE user_id = ?';
+        await db.query(sql, [username, user_id]);
+        return username;
+    } catch (error) {
+        console.log(error);
+        return 'fail'
+    }
+}
+
+module.exports = { 
+    postUserProgress, 
+    getUserProgress, 
+    updateUserProgress, 
+    getWords, 
+    getCompletedWords, 
+    postUserLogs,
+    editUserUsername
+};

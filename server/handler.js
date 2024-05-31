@@ -2,6 +2,7 @@ const axios = require('axios');
 const signupEmail = require('../services/signupEmail');
 const loginEmail = require('../services/loginEmail');
 const forgetPassword = require('../services/forgetPassword');
+const { uploadToFirebaseStorage } = require('../services/profileUser');
 const { 
     postUserProgress, 
     getUserProgress, 
@@ -247,6 +248,35 @@ async function editUsername(user_id, username) {
     }
 }
 
+async function upProfile(uid, profile){
+    let user_id = req.body.uid;
+    let filename = req.body.file;
+    try {
+        const result = await uploadToFirebaseStorage(`${uploadfilepath}`, filename);
+
+        if(result === 'fail'){
+            return {
+                'status': 'fail',
+                'message': 'gagal upload profile'
+            };
+        }
+
+        return {
+            'status': 'success',
+            'message': 'berhasil upload profile',
+            'data': result
+        };
+
+    } catch (error) {
+        console.log(error);
+        return {
+            'status': 'fail',
+            'message': 'gagal upload profile'
+        }        
+    }
+
+}
+
 module.exports = { 
     getWord, 
     loginUser, 
@@ -255,6 +285,7 @@ module.exports = {
     getWordsByDifficulty, 
     postLogs, 
     userForgetPassword,
-    editUsername
+    editUsername,
+    upProfile
 };
 

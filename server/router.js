@@ -181,5 +181,26 @@ router.put('/user/username', async (req, res) => {
     }
 })
 
+router.post('/user/profile', async (req, res) => {
+    let user_id = req.body.uid;
+    let profile = req.body.profile;
+    try {
+        const data = await upProfile(user_id, profile);
+        res.status(201);
+
+        if(data.status === 'fail'){
+            res.status(404);
+        }
+
+        res.send(data);
+    } catch (error) {
+        console.log(error);
+        res.send({
+            'status': 'fail',
+            'message': 'harap maklum'
+        }).status(500);
+    }
+})
+
 module.exports = router;
 

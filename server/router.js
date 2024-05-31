@@ -191,6 +191,7 @@ router.post('/user/profile', upload.single('image'), async (req, res) => {
     let user_id = req.body.uid;
     let file = req.file;
     let filename = req.file.originalname;
+    console.log(user_id, filename);
     try {
         const data = await uploadProfilePic(user_id, file, filename);
         res.status(201);

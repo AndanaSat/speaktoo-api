@@ -1,5 +1,5 @@
 const { storage } = require('../config/firebase');
-const { ref, uploadBytes } = require('firebase/storage');
+const { ref, uploadBytes, getDownloadURL } = require('firebase/storage');
 
 async function uploadUserProfilePic(user_id, file, filename){
     try {
@@ -8,7 +8,9 @@ async function uploadUserProfilePic(user_id, file, filename){
 
         await uploadBytes(fileRef, file);
 
-        return 'berhasil upload profile picture';
+        const url = await getDownloadURL(fileRef);
+
+        return url;
     } catch (error) {
         console.log(error);
         return 'fail';

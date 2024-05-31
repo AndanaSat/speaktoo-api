@@ -251,6 +251,7 @@ async function editUsername(user_id, username) {
 async function uploadProfilePic(user_id, file, filename){
     try {
         const result = await uploadUserProfilePic(user_id, file, filename);
+
         if(result === 'fail'){
             return {
                 'status': 'fail',
@@ -266,7 +267,7 @@ async function uploadProfilePic(user_id, file, filename){
         console.log(error);
         return {
             'status': 'fail',
-            'message': 'mohon cek kembail file anda'
+            'message': 'terjadi kesalahan pada server'
         };
     }
 }

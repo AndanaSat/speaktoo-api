@@ -1,4 +1,4 @@
-const { storage } = require("../config/cloudStorage");
+const storage = require("../config/cloudStorage");
 
 const uploadToFirebaseStorage = async (filepath, fileName) => {
     try {

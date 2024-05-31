@@ -3,4 +3,4 @@ package-lock.json
 /config/firebase.js
 /config/sqlConfig.js
 .env
-/config/serviceAccountKey.json
+serviceaccountkey.json

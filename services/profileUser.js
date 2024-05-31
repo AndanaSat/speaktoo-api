@@ -1,27 +1,52 @@
-const storage = require("../config/cloudStorage");
 
-const uploadToFirebaseStorage = async (filepath, fileName) => {
-    try {
+const {Storage} = require('@google-cloud/storage')
+const fs = require('fs')
+const dateFormat = require('dateformat')
+const path = require('path');
+const gcs = require('../config/cloudStorage');
 
-        const gcs = storage.bucket("gs://capstone-project-c241-ps162.appspot.com");
-        const storagepath = `profile/${fileName}`;
+// const pathKey = path.resolve('./serviceaccountkey.json')
 
-        const result = await gcs.upload(filepath, {
-            destination: storagepath,
-            public: true,
-            metadata: {
-                contentType: "image/jpeg",
-                cacheControl: "public, max-age=31536000",
-            },
-        });
-        return result[0].metadata.mediaLink;
+// TODO: Sesuaikan konfigurasi Storage
+// const gcs = new Storage({
+//     projectId: 'project_id_Anda',
+//     keyFilename: pathKey
+// })
 
-    } catch (error) {
+// TODO: Tambahkan nama bucket yang digunakan
+const bucketName = 'capstone-project-c241-ps162.appspot.com'
+const bucket = gcs.bucket(bucketName)
 
-        console.log(error);
-        throw new Error(error.message);
-
-    }
+function getPublicUrl(filename) {
+    return 'https://storage.googleapis.com/' + bucketName + '/' + filename;
 }
 
-module.exports = uploadToFirebaseStorage;
+let ImgUpload = {}
+
+ImgUpload.uploadToGcs = (req, res, next) => {
+    if (!req.file) return next()
+
+    const gcsname = dateFormat(new Date(), "yyyymmdd-HHMMss")
+    const file = bucket.file(gcsname)
+
+    const stream = file.createWriteStream({
+        metadata: {
+            contentType: req.file.mimetype
+        }
+    })
+
+    stream.on('error', (err) => {
+        req.file.cloudStorageError = err
+        next(err)
+    })
+
+    stream.on('finish', () => {
+        req.file.cloudStorageObject = gcsname
+        req.file.cloudStoragePublicUrl = getPublicUrl(gcsname)
+        next()
+    })
+
+    stream.end(req.file.buffer)
+}
+
+module.exports = ImgUpload;

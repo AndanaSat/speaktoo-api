@@ -2,6 +2,7 @@ const axios = require('axios');
 const signupEmail = require('../services/signupEmail');
 const loginEmail = require('../services/loginEmail');
 const forgetPassword = require('../services/forgetPassword');
+// const ImgUpload = require('../services/profileUser');
 const { 
     postUserProgress, 
     getUserProgress, 
@@ -249,9 +250,9 @@ async function editUsername(user_id, username) {
 
 // async function upProfile(user_id, profile){
 //     try {
-//         const result = await uploadToFirebaseStorage(profile);
+//         const ppURL = await ImgUpload(profile);
 
-//         if(result === 'fail'){
+//         if(ppURL === 'fail'){
 //             return {
 //                 'status': 'fail',
 //                 'message': 'gagal upload profile'
@@ -261,14 +262,14 @@ async function editUsername(user_id, username) {
 //         return {
 //             'status': 'success',
 //             'message': 'berhasil upload profile',
-//             'data': result
+//             'data': ppURL
 //         };
 
 //     } catch (error) {
 //         console.log(error);
 //         return {
 //             'status': 'fail',
-//             'message': 'gagal upload profile'
+//             'message': 'something went wrong when uploading profile picture'
 //         }        
 //     }
 
@@ -283,5 +284,6 @@ module.exports = {
     postLogs, 
     userForgetPassword,
     editUsername,
+    // upProfile
 };
 

@@ -1,11 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const ImgUpload = require('../services/profileUser');
-const Multer = require('multer');
-const multer = Multer({
-    storage: Multer.MemoryStorage,
-    fileSize: 5 * 1024 * 1024
-})
+const multer = require('multer');
+
 const { 
     getWord, 
     loginUser, 
@@ -15,14 +12,17 @@ const {
     postLogs, 
     userForgetPassword,
     editUsername,
-    upProfile
+    uploadProfilePic
 } = require('./handler');
+
+const upload = multer({ 
+    storage: multer.memoryStorage() 
+});
 
 router.get('/', (req, res) => {
     res.send('Hello World!');
 })
 
-// User Progress and Authentication
 router.post('/email/login', async (req, res)=>{
     let { email, password } = req.body;
     try{
@@ -84,7 +84,6 @@ router.put('/user/progress', async (req, res) => {
     }
 })
 
-// Function APPS
 router.get('/word/:word', async (req, res) => {
     let { word } = req.params;
     try{
@@ -188,21 +187,19 @@ router.put('/user/username', async (req, res) => {
     }
 })
 
-router.post('/user/profile',multer.single('attachment'), ImgUpload.uploadToGcs, async (req, res) => {
+router.post('/user/profile', upload.single('image'), async (req, res) => {
     let user_id = req.body.uid;
+    let file = req.file;
+    let filename = req.file.originalname;
     try {
-        var imageUrl = ''
-
-        if (req.file && req.file.cloudStoragePublicUrl) {
-            imageUrl = req.file.cloudStoragePublicUrl
-        }
+        const data = await uploadProfilePic(user_id, file, filename);
         res.status(201);
 
-        // if(data.status === 'fail'){
-        //     res.status(404);
-        // }
-
-        res.send(imageUrl);
+        if(data.status === 'fail'){
+            res.status(400);
+        }
+        
+        res.send(data);
     } catch (error) {
         console.log(error);
         res.send({
@@ -213,4 +210,3 @@ router.post('/user/profile',multer.single('attachment'), ImgUpload.uploadToGcs, 
 })
 
 module.exports = router;
-

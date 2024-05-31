@@ -1,4 +1,4 @@
-const auth = require('../config/firebase');
+const { auth } = require('../config/firebase');
 const { signInWithEmailAndPassword } = require('firebase/auth');
 
 async function loginEmail(email, password) {
@@ -9,7 +9,7 @@ async function loginEmail(email, password) {
             'email': userCredential.user.email
         };
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         return 'fail';
     }
 }

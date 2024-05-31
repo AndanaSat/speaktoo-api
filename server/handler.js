@@ -2,7 +2,7 @@ const axios = require('axios');
 const signupEmail = require('../services/signupEmail');
 const loginEmail = require('../services/loginEmail');
 const forgetPassword = require('../services/forgetPassword');
-// const ImgUpload = require('../services/profileUser');
+const uploadUserProfilePic = require('../services/profileUser');
 const { 
     postUserProgress, 
     getUserProgress, 
@@ -11,7 +11,7 @@ const {
     getCompletedWords, 
     postUserLogs,
     editUserUsername
-} = require('../services/sqlServices')
+} = require('../services/sqlServices');
 
 async function getWord(word) {
     let url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word;
@@ -248,32 +248,28 @@ async function editUsername(user_id, username) {
     }
 }
 
-// async function upProfile(user_id, profile){
-//     try {
-//         const ppURL = await ImgUpload(profile);
+async function uploadProfilePic(user_id, file, filename){
+    try {
+        const result = await uploadUserProfilePic(user_id, file, filename);
+        if(result === 'fail'){
+            return {
+                'status': 'fail',
+                'message': 'mohon cek kembail file anda'
+            };
+        }
 
-//         if(ppURL === 'fail'){
-//             return {
-//                 'status': 'fail',
-//                 'message': 'gagal upload profile'
-//             };
-//         }
-
-//         return {
-//             'status': 'success',
-//             'message': 'berhasil upload profile',
-//             'data': ppURL
-//         };
-
-//     } catch (error) {
-//         console.log(error);
-//         return {
-//             'status': 'fail',
-//             'message': 'something went wrong when uploading profile picture'
-//         }        
-//     }
-
-// }
+        return {
+            'status': 'success',
+            'message': 'berhasil upload profile picture'
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            'status': 'fail',
+            'message': 'mohon cek kembail file anda'
+        };
+    }
+}
 
 module.exports = { 
     getWord, 
@@ -284,6 +280,6 @@ module.exports = {
     postLogs, 
     userForgetPassword,
     editUsername,
-    // upProfile
+    uploadProfilePic
 };
 

@@ -1,4 +1,4 @@
-const auth = require('../config/firebase');
+const { auth } = require('../config/firebase');
 const { sendPasswordResetEmail } = require('firebase/auth');
 
 async function forgetPassword(email){

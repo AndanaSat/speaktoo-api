@@ -204,7 +204,7 @@ router.post('/user/profile', upload.single('image'), async (req, res) => {
         console.log(error);
         res.send({
             'status': 'fail',
-            'message': 'failed upload file'
+            'message': 'Terjadi Kesalahan Pada Server'
         }).status(500);
     }
 })

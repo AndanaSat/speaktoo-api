@@ -3,7 +3,7 @@ const { ref, uploadBytes, getDownloadURL } = require('firebase/storage');
 
 async function uploadUserProfilePic(user_id, file, filename){
     try {
-        const path = user_id + '/' + filename;
+        const path = user_id + '/' + user_id;
         const fileRef = ref(storage, path);
 
         await uploadBytes(fileRef, file);

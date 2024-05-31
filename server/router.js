@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const ImgUpload = require('../services/profileUser');
 const Multer = require('multer');
 const multer = Multer({
     storage: Multer.MemoryStorage,
@@ -188,26 +187,24 @@ router.put('/user/username', async (req, res) => {
     }
 })
 
-router.post('/user/profile',multer.single('attachment'), ImgUpload.uploadToGcs, async (req, res) => {
-    let user_id = req.body.uid;
+router.post('/user/profile', async (req, res) => {
+    let uid = req.body.uid;
+    let file = req.body.file;
     try {
-        var imageUrl = ''
-
-        if (req.file && req.file.cloudStoragePublicUrl) {
-            imageUrl = req.file.cloudStoragePublicUrl
-        }
+        console.log(file)
+        const data = await upProfile(uid, file);
         res.status(201);
 
-        // if(data.status === 'fail'){
-        //     res.status(404);
-        // }
+        if(data === 'fail'){
+            res.status(400);
+        }
 
-        res.send(imageUrl);
+        res.send(data);
     } catch (error) {
         console.log(error);
         res.send({
             'status': 'fail',
-            'message': 'failed upload file'
+            'message': 'Terjadi Kesalahan Pada Server'
         }).status(500);
     }
 })

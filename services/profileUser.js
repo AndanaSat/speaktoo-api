@@ -1,52 +1,32 @@
-
-const {Storage} = require('@google-cloud/storage')
-const fs = require('fs')
-const dateFormat = require('dateformat')
+const { storage } = require("../config/firebase");
+const { ref, uploadBytes } = require("firebase/storage");
 const path = require('path');
-const gcs = require('../config/cloudStorage');
 
-// const pathKey = path.resolve('./serviceaccountkey.json')
+const uploadProfile = async (uid, file) => {
+    try {
+        const fileName = '1';
+        // const storageRef = ref(storage, uid + '/' + fileName);
+        // const fileLocation = await storageRef.uploadFile(file, fileName);
+        // return({
+        //     status: "success",
+        //     message: "File uploaded successfully",
+        //     data: {
+        //         location: fileLocation,
+        //     },
+        // });
 
-// TODO: Sesuaikan konfigurasi Storage
-// const gcs = new Storage({
-//     projectId: 'project_id_Anda',
-//     keyFilename: pathKey
-// })
-
-// TODO: Tambahkan nama bucket yang digunakan
-const bucketName = 'capstone-project-c241-ps162.appspot.com'
-const bucket = gcs.bucket(bucketName)
-
-function getPublicUrl(filename) {
-    return 'https://storage.googleapis.com/' + bucketName + '/' + filename;
+        // const fileName = file.originalname;
+        const storageRef = ref(storage, "images/" + fileName);
+        uploadBytes(storageRef, file).then((snapshot) => {
+            console.log('Uploaded a blob or file!');
+        });
+    } catch (error) {
+        console.error(error);
+        return({
+            status: "fail",
+            message: "Internal server error",
+        });
+    }
 }
 
-let ImgUpload = {}
-
-ImgUpload.uploadToGcs = (req, res, next) => {
-    if (!req.file) return next()
-
-    const gcsname = dateFormat(new Date(), "yyyymmdd-HHMMss")
-    const file = bucket.file(gcsname)
-
-    const stream = file.createWriteStream({
-        metadata: {
-            contentType: req.file.mimetype
-        }
-    })
-
-    stream.on('error', (err) => {
-        req.file.cloudStorageError = err
-        next(err)
-    })
-
-    stream.on('finish', () => {
-        req.file.cloudStorageObject = gcsname
-        req.file.cloudStoragePublicUrl = getPublicUrl(gcsname)
-        next()
-    })
-
-    stream.end(req.file.buffer)
-}
-
-module.exports = ImgUpload;
+module.exports = uploadProfile;

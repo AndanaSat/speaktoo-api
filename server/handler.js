@@ -2,7 +2,6 @@ const axios = require('axios');
 const signupEmail = require('../services/signupEmail');
 const loginEmail = require('../services/loginEmail');
 const forgetPassword = require('../services/forgetPassword');
-const { uploadToFirebaseStorage } = require('../services/profileUser');
 const { 
     postUserProgress, 
     getUserProgress, 
@@ -248,34 +247,32 @@ async function editUsername(user_id, username) {
     }
 }
 
-async function upProfile(uid, profile){
-    let user_id = req.body.uid;
-    let filename = req.body.file;
-    try {
-        const result = await uploadToFirebaseStorage(`${uploadfilepath}`, filename);
+// async function upProfile(user_id, profile){
+//     try {
+//         const result = await uploadToFirebaseStorage(profile);
 
-        if(result === 'fail'){
-            return {
-                'status': 'fail',
-                'message': 'gagal upload profile'
-            };
-        }
+//         if(result === 'fail'){
+//             return {
+//                 'status': 'fail',
+//                 'message': 'gagal upload profile'
+//             };
+//         }
 
-        return {
-            'status': 'success',
-            'message': 'berhasil upload profile',
-            'data': result
-        };
+//         return {
+//             'status': 'success',
+//             'message': 'berhasil upload profile',
+//             'data': result
+//         };
 
-    } catch (error) {
-        console.log(error);
-        return {
-            'status': 'fail',
-            'message': 'gagal upload profile'
-        }        
-    }
+//     } catch (error) {
+//         console.log(error);
+//         return {
+//             'status': 'fail',
+//             'message': 'gagal upload profile'
+//         }        
+//     }
 
-}
+// }
 
 module.exports = { 
     getWord, 
@@ -286,6 +283,5 @@ module.exports = {
     postLogs, 
     userForgetPassword,
     editUsername,
-    upProfile
 };
 

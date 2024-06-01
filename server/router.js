@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const ImgUpload = require('../services/profileUser');
 const multer = require('multer');
 
 const { 

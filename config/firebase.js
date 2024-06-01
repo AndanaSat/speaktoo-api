@@ -1,9 +1,13 @@
 // Import the functions you need from the SDKs you need
-const getApp = require("firebase/app");
-const getAuth = require("firebase/auth");
-const { getStorage, ref } = require("firebase/storage");
-require('dotenv').config();
+// import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
+// import { getAuth } from "firebase/auth";
 
+const { initializeApp } = require('firebase/app');
+//const { getAnalytics } = require('firebase/analytics');
+const { getAuth } = require('firebase/auth');
+const { getStorage } = require('firebase/storage');
+require('dotenv').config();
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -19,9 +23,9 @@ const firebaseConfig = {
   measurementId: process.env.MEASUREMENT_ID
 };
 
-const app = getApp.initializeApp(firebaseConfig);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const storage = getStorage();
-const auth = getAuth.initializeAuth(app);
 
-
-module.exports = { auth, storage};
+module.exports = { auth, storage };

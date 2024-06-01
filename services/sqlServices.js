@@ -78,7 +78,18 @@ async function editUserUsername (user_id, username){
         return username;
     } catch (error) {
         console.log(error);
-        return 'fail'
+        return 'fail';
+    }
+}
+
+async function addUserProfilePic(user_id, url){
+    try {
+        const sql = 'UPDATE user_progress SET profile_pic = ? WHERE user_id = ?';
+        await db.query(sql, [url, user_id]);
+        return url;
+    } catch (error) {
+        console.log(error)
+        return 'fail';
     }
 }
 
@@ -89,5 +100,6 @@ module.exports = {
     getWords, 
     getCompletedWords, 
     postUserLogs,
-    editUserUsername
+    editUserUsername,
+    addUserProfilePic
 };

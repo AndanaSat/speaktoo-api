@@ -10,7 +10,8 @@ const {
     getWords, 
     getCompletedWords, 
     postUserLogs,
-    editUserUsername
+    editUserUsername,
+    addUserProfilePic
 } = require('../services/sqlServices');
 
 async function getWord(word) {
@@ -251,8 +252,9 @@ async function editUsername(user_id, username) {
 async function uploadProfilePic(user_id, file, filename){
     try {
         const result = await uploadUserProfilePic(user_id, file, filename);
+        const resultSQL = await addUserProfilePic(user_id, result);
 
-        if(result === 'fail'){
+        if(result === 'fail' || resultSQL === 'fail'){
             return {
                 'status': 'fail',
                 'message': 'mohon cek kembail file anda'

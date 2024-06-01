@@ -1,10 +1,14 @@
-
-
-const { initializeApp } = require('firebase/app');
-const { getAuth } = require('firebase/auth');
-const { getStorage } = require('firebase/storage');
+// Import the functions you need from the SDKs you need
+const getApp = require("firebase/app");
+const getAuth = require("firebase/auth");
+const { getStorage, ref } = require("firebase/storage");
 require('dotenv').config();
 
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,
@@ -15,8 +19,9 @@ const firebaseConfig = {
   measurementId: process.env.MEASUREMENT_ID
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const app = getApp.initializeApp(firebaseConfig);
 const storage = getStorage();
+const auth = getAuth.initializeAuth(app);
 
-module.exports = { auth, storage };
+
+module.exports = { auth, storage};

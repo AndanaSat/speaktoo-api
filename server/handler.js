@@ -69,7 +69,8 @@ async function loginUser(email, password){
                 'uid': userCredential.uid,
                 'email': userCredential.email,
                 'username': userCredentialSQL.username,
-                'progress': userCredentialSQL.progress 
+                'progress': userCredentialSQL.progress,
+                'profile_pic': userCredentialSQL.profile_pic
             }
         };
     }catch(error){

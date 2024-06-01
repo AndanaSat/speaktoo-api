@@ -252,7 +252,11 @@ async function editUsername(user_id, username) {
 
 async function uploadProfilePic(user_id, file, filename){
     try {
-        const result = await uploadUserProfilePic(user_id, file, filename);
+        const file_extension = filename.slice(
+            ((filename.lastIndexOf('.') - 1) >>> 0) + 2
+        );
+        
+        const result = await uploadUserProfilePic(user_id, file, file_extension);
         const resultSQL = await addUserProfilePic(user_id, result);
 
         if(result === 'fail' || resultSQL === 'fail'){

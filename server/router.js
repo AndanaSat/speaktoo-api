@@ -11,7 +11,8 @@ const {
     postLogs, 
     userForgetPassword,
     editUsername,
-    uploadProfilePic
+    uploadProfilePic,
+    ubahPassword
 } = require('./handler');
 
 const upload = multer({ 
@@ -204,6 +205,28 @@ router.post('/user/profile', upload.single('image'), async (req, res) => {
         res.send({
             'status': 'fail',
             'message': 'Terjadi Kesalahan Pada Server'
+        }).status(500);
+    }
+})
+
+router.put('/user/pass', async (req, res) => {
+    let email = req.body.email;
+    let oldPassword = req.body.oldPassword;
+    let newPassword = req.body.newPassword;
+    try {
+        const data = await ubahPassword(email, oldPassword, newPassword);
+        res.status(200);
+
+        if(data.status === 'fail'){
+            res.status(404);
+        }
+
+        res.send(data);
+    } catch (error) {
+        console.log(error);
+        res.send({
+            'status': 'fail',
+            'message': 'harap maklum'
         }).status(500);
     }
 })

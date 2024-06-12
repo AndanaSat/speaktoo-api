@@ -38,17 +38,6 @@ async function updateUserProgress(user_id, progress){
     }
 }
 
-async function postUserLogs(user_id, word_id){
-    try {
-        const sql = 'INSERT INTO user_logs (user_id, word_id, completed) VALUES (?, ?, ?)';
-        await db.query(sql, [user_id, word_id, 1]);
-        return 'behasil post logs';
-    } catch (error) {
-        console.log(error);
-        return 'fail';
-    }
-}
-
 async function editUserUsername (user_id, username){
     try {
         const sql = 'UPDATE user_progress SET username = ? WHERE user_id = ?';
@@ -75,7 +64,6 @@ module.exports = {
     postUserProgress, 
     getUserProgress, 
     updateUserProgress,
-    postUserLogs,
     editUserUsername,
     addUserProfilePic
 };

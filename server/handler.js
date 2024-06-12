@@ -1,4 +1,4 @@
-const axios = require('axios');
+const getWordService = require('../services/getWordService')
 const signupEmail = require('../services/signupEmail');
 const {loginEmail, editPassword} = require('../services/loginEmail');
 const forgetPassword = require('../services/forgetPassword');
@@ -15,29 +15,22 @@ const {
 } = require('../services/sqlServices');
 
 async function getWord(word) {
-    let url = 'https://api.dictionaryapi.dev/api/v2/entries/en/' + word;
-
     try{
-        const response = await axios.get(url);
-        const data = response.data;
-        
-        let word = data[0].word;
-        let audio = 'maaf audio tidak tersedia';
-        let definition = data[0].meanings;
-        
-        data[0].phonetics.forEach((phonetic) => {
-            if(phonetic.audio != ''){
-                audio = phonetic.audio
-            }
-        });
+        const result = await getWordService(word);
+
+        if(result === 'fail'){
+            return {
+                'status': 'fail',
+                'message': 'gagal get word'
+            };
+        }
 
         return {
             'status': 'success',
             'message': 'berhasil get',
             'data': {
-                'word': word,
-                'meaning': definition,
-                'audio': audio
+                'audio': encodeURI('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=' + word),
+                result
             }
         };
     }
@@ -268,8 +261,7 @@ async function uploadProfilePic(user_id, file, filename){
 
         return {
             'status': 'success',
-            'message': 'berhasil upload profile picture',
-            'data': result
+            'message': 'berhasil upload profile picture'
         };
     } catch (error) {
         console.log(error);
@@ -316,4 +308,3 @@ module.exports = {
     uploadProfilePic,
     ubahPassword
 };
-

@@ -23,21 +23,6 @@ async function getUserProgress(user_id){
     
 }
 
-async function updateUserProgress(user_id, progress){
-    try {
-        const sql = 'UPDATE user_progress SET progress = ? WHERE user_id = ?';
-        await db.query(sql, [progress, user_id]);
-        const result = {
-            user_id,
-            progress
-        };
-        return result;
-    } catch (error) {
-        console.log(error);
-        return 'fail';
-    }
-}
-
 async function editUserUsername (user_id, username){
     try {
         const sql = 'UPDATE user_progress SET username = ? WHERE user_id = ?';
@@ -63,7 +48,6 @@ async function addUserProfilePic(user_id, url){
 module.exports = { 
     postUserProgress, 
     getUserProgress, 
-    updateUserProgress,
     editUserUsername,
     addUserProfilePic
 };

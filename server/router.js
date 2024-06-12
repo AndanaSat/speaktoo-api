@@ -3,12 +3,8 @@ const router = express.Router();
 const multer = require('multer');
 
 const { 
-    getWord, 
     loginUser, 
     signupUser, 
-    updateProgress,  
-    getWordsByDifficulty, 
-    postLogs, 
     userForgetPassword,
     editUsername,
     uploadProfilePic,

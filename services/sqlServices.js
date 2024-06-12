@@ -38,28 +38,6 @@ async function updateUserProgress(user_id, progress){
     }
 }
 
-async function getWords(difficulty){
-    try {
-        const sql = 'SELECT words.word_id, word FROM WORDS WHERE word_type = ?'
-        const [result] = await db.query(sql, [difficulty]);
-        return result;
-    } catch (error) {
-        console.log(error);
-        return 'fail';
-    }
-}
-
-async function getCompletedWords(user_id, difficulty){
-    try {
-        const sql = 'SELECT words.word, COALESCE(user_logs.completed, 0) AS completed FROM user_logs RIGHT JOIN words ON words.word_id = user_logs.word_id WHERE user_logs.user_id = ? AND words.word_type = ?';
-        const [result] = await db.query(sql, [user_id, difficulty]);
-        return result;
-    } catch (error) {
-        console.log(error);
-        return 'fail';
-    }
-}
-
 async function postUserLogs(user_id, word_id){
     try {
         const sql = 'INSERT INTO user_logs (user_id, word_id, completed) VALUES (?, ?, ?)';
@@ -96,9 +74,7 @@ async function addUserProfilePic(user_id, url){
 module.exports = { 
     postUserProgress, 
     getUserProgress, 
-    updateUserProgress, 
-    getWords, 
-    getCompletedWords, 
+    updateUserProgress,
     postUserLogs,
     editUserUsername,
     addUserProfilePic

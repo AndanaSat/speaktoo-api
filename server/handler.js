@@ -7,42 +7,9 @@ const {
     postUserProgress, 
     getUserProgress, 
     updateUserProgress, 
-    getWords, 
-    getCompletedWords, 
-    postUserLogs,
     editUserUsername,
     addUserProfilePic
 } = require('../services/sqlServices');
-
-async function getWord(word) {
-    try{
-        const result = await getWordService(word);
-
-        if(result === 'fail'){
-            return {
-                'status': 'fail',
-                'message': 'gagal get word'
-            };
-        }
-
-        return {
-            'status': 'success',
-            'message': 'berhasil get',
-            'data': {
-                'word': word,
-                'audio': encodeURI('https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=' + word),
-                result
-            }
-        };
-    }
-    catch(error) {
-        console.log(error);
-        return {
-            'status': 'fail',
-            'message': 'gagal get word'
-        };
-    }
-}
 
 async function loginUser(email, password){
     try{

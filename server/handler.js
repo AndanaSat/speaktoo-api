@@ -4,9 +4,9 @@ const {loginEmail, editPassword} = require('../services/loginEmail');
 const forgetPassword = require('../services/forgetPassword');
 const uploadUserProfilePic = require('../services/profileUser');
 const { 
+    postUserProgress,
     getUserProgress, 
     editUserUsername,
-    updateUserProgress, 
     addUserProfilePic
 } = require('../services/sqlServices');
 

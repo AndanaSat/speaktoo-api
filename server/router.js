@@ -63,49 +63,6 @@ router.post('/email/signup', async (req, res)=>{
     }
 })
 
-router.put('/user/progress', async (req, res) => {
-    let user_id = req.body.uid;
-    let progress = req.body.progress;
-    try {
-        const data = await updateProgress(user_id, progress);
-        res.status(200);
-
-        if(data.status === 'fail'){
-            res.status(400);
-        }
-
-        res.send(data);
-    } catch (error) {
-        console.log(error);
-        res.send({
-            'status': 'fail',
-            'message': 'harap maklum'
-        }).status(500);
-    }
-})
-
-router.post('/user/logs', async(req, res) => {
-    let user_id = req.body.uid;
-    let word_id = req.body.wid;
-
-    try {
-        const data = await postLogs(user_id, word_id);
-        res.status(201);
-
-        if(data.status === 'fail'){
-            res.status(400);
-        }
-
-        res.send(data);
-    } catch (error) {
-        console.log(error);
-        res.send({
-            'status': 'fail',
-            'message': 'harap maklum'
-        }).status(500);
-    }
-})
-
 router.post('/email/forpas', async (req, res) => {
     let { email } = req.body;
     try {

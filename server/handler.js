@@ -1,4 +1,3 @@
-const getWordService = require('../services/getWordService')
 const signupEmail = require('../services/signupEmail');
 const {loginEmail, editPassword} = require('../services/loginEmail');
 const forgetPassword = require('../services/forgetPassword');
@@ -174,8 +173,7 @@ async function ubahPassword(email, oldPassword, newPassword){
     }
 }
 
-module.exports = { 
-    getWord, 
+module.exports = {  
     loginUser, 
     signupUser,
     userForgetPassword,

@@ -1,3 +1,4 @@
+const buffer = require('buffer').Buffer;
 const getWordService = require('../services/getWordService')
 const signupEmail = require('../services/signupEmail');
 const {loginEmail, editPassword} = require('../services/loginEmail');
@@ -244,13 +245,15 @@ async function editUsername(user_id, username) {
     }
 }
 
-async function uploadProfilePic(user_id, file, filename){
+async function uploadProfilePic(user_id, file){
     try {
-        const file_extension = filename.slice(
-            ((filename.lastIndexOf('.') - 1) >>> 0) + 2
-        );
+        const base64String = file;
+        const file_extension = base64String.split(';')[0].split('/')[1];
+        const base64Data = base64String.split(',')[1];
+
+        const decodedData = buffer.from(base64Data, 'base64');
         
-        const result = await uploadUserProfilePic(user_id, file, file_extension);
+        const result = await uploadUserProfilePic(user_id, decodedData, file_extension);
         const resultSQL = await addUserProfilePic(user_id, result);
 
         if(result === 'fail' || resultSQL === 'fail'){

@@ -290,6 +290,11 @@ Fitur ini digunakan ketika user ingin meng-edit username. Pastikan uid sudah ben
 
 Fitur ini digunakan ketika user ingin meng-upload sebuah profile picture. API akan return URL dari file profile picture. Pastikan uid sudah benar.
 
+Format Base64:
+```
+data:image/{file_extension};base64,{base64Data}
+```
+
 ### Request
 - Method: POST
 - URL: /user/profile

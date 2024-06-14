@@ -265,7 +265,8 @@ async function uploadProfilePic(user_id, file){
 
         return {
             'status': 'success',
-            'message': 'berhasil upload profile picture'
+            'message': 'berhasil upload profile picture',
+            'data': result
         };
     } catch (error) {
         console.log(error);

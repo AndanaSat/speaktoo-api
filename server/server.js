@@ -1,9 +1,9 @@
 const express = require('express')
 const app = express()
-const port = 3000
+require('dotenv').config()
+const port = 4000
 const router = require('./router')
 const bodyParser = require('body-parser')
-require('dotenv').config()
 
 app.use(bodyParser.json())
 app.use(router)

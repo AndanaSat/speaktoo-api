@@ -33,14 +33,7 @@ const generativeModel = vertex_ai.preview.getGenerativeModel({
   ],
 });
 
-async function generateContent(base64file, word) {
-    
-    const audio1 = {
-        inlineData: {
-            mimeType: 'audio/x-m4a',
-            data: base64file
-        }
-    };
+async function generateContent(word) {
     
     const text1 = {text: `\"you\'re an English teacher. how do you pronounce \"`+ word +`\" give me a brief explanation\"`};
     
@@ -52,12 +45,18 @@ async function generateContent(base64file, word) {
     
   const streamingResp = await generativeModel.generateContentStream(req);
 
-  for await (const item of streamingResp.stream) {
-    process.stdout.write('stream chunk: ' + JSON.stringify(item) + '\n');
-  }
-
-  console.log(streamingResp)
-  process.stdout.write('aggregated response: ' + JSON.stringify(await streamingResp.response));
+  return streamingResp.response;
 }
 
-export default generateContent;
+async function useAI(audioFile, word){
+  const audio1 = {
+    inlineData: {
+      mimeType: 'audio/mpeg',
+      data: audioFile
+    }
+  };
+  const result = await generateContent(word);
+  return result.candidates[0].content.parts[0].text
+}
+
+export default useAI;

@@ -1,5 +1,5 @@
 import express from 'express';
-import generateContent from '../AI/generative.js';
+import useAI from '../AI/generative.js';
 import multer from 'multer';
 import { Buffer } from 'node:buffer';
 
@@ -9,16 +9,15 @@ const upload = multer({
     storage: multer.memoryStorage() 
 });
 
-const fileBuffer = (base64file) => Buffer.from('base64', base64file);
 router.get('/', async (req, res) => {
     res.send("Api Gen is working properly")
 })
 
-router.post('/generate', upload.any(), async (req, res) => {
+router.post('/generate', upload.single('audio'), async (req, res) => {
     try{
-        const base64file = req.body.audio;
+        const audioFile = req.file;
         const word = req.body.word;
-        const result = await generateContent(fileBuffer(base64file), word);
+        const result = await useAI(audioFile, word);
 
         res.send({
             'status': 'success',

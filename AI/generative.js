@@ -34,6 +34,12 @@ const generativeModel = vertex_ai.preview.getGenerativeModel({
 });
 
 async function generateContent(word) {
+    const audio1 = {
+      inlineData: {
+        mimeType: 'audio/mpeg',
+        data: '//OExAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
+      }
+    };
     
     const text1 = {text: `\"you\'re an English teacher. how do you pronounce \"`+ word +`\" give me a brief explanation\"`};
     
@@ -48,15 +54,4 @@ async function generateContent(word) {
   return streamingResp.response;
 }
 
-async function useAI(audioFile, word){
-  const audio1 = {
-    inlineData: {
-      mimeType: 'audio/mpeg',
-      data: audioFile
-    }
-  };
-  const result = await generateContent(word);
-  return result.candidates[0].content.parts[0].text
-}
-
-export default useAI;
+export default generateContent;

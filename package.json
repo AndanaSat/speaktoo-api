@@ -1,17 +1,10 @@
 {
   "name": "speaktoo-genai",
   "version": "1.0.0",
-<<<<<<< HEAD
-  "main": "app.js",
-  "type": "module",
-  "scripts": {
-    "start": "nodemon app.js"
-=======
   "main": "./app/app.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon ./app/app.js"
->>>>>>> 32754e8616c0f4accadc8be34161bec69ce61467
+    "start": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,10 +13,7 @@
     "@google-cloud/vertexai": "^1.2.0",
     "body-parser": "^1.20.2",
     "buffer": "^6.0.3",
-<<<<<<< HEAD
-=======
     "cors": "^2.8.5",
->>>>>>> 32754e8616c0f4accadc8be34161bec69ce61467
     "express": "^4.19.2",
     "js-base64": "^3.7.7",
     "multer": "^1.4.5-lts.1",

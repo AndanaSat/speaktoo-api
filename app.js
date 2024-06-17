@@ -5,6 +5,7 @@ import multer from 'multer';
 import generateContent from './ai.js';
 
 const app = express();
+const port = 5000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
@@ -32,7 +33,7 @@ app.post('/generate', upload.single('audio'), async (req, res) => {
 
         const audio1 = {
             inlineData: {
-                mimeType: 'audio/mpeg',
+                mimeType: 'audio/wav',
                 data: base64file
             }
         };
@@ -51,7 +52,6 @@ app.post('/generate', upload.single('audio'), async (req, res) => {
     }
 });
 
-const port = 4000;
 app.listen(port, () => {
-    console.log('Server is listening on', port);
-});
+    console.log('App is running on', port);
+})

@@ -51,7 +51,3 @@ app.post('/generate', upload.single('audio'), async (req, res) => {
         res.status(500).json({ status: 'fail', message: 'Error generating content' });
     }
 });
-
-app.listen(port, () => {
-    console.log('App is running on', port);
-})

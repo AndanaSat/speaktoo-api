@@ -39,7 +39,8 @@ app.post('/generate', upload.single('audio'), async (req, res) => {
         };
 
         const result = await generateContent(audio1, text1);
-        const response = JSON.parse(result.candidates[0].content.parts[0].text.replace(/```json\n|```/g, ''));
+        const cleanedJsonString = result.candidates[0].content.parts[0].text.replace(/```json\n|```/g, '');
+        const response = JSON.parse(cleanedJsonString);
 
         res.status(200).json({
             'status': 'success',

@@ -5,7 +5,7 @@ import multer from 'multer';
 import generateContent from './ai.js';
 
 const app = express();
-const port = 5000;
+const port = 4000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({

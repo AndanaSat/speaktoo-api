@@ -32,8 +32,8 @@ app.post('/generate', upload.single('audio'), async (req, res) => {
             }
         };
 
-        const result = await generateContent(audio1, text1);
-        const response = result.candidates[0].content.parts[0].text.replace(/\*/g, '').replace(/\\n/g, '').lace(/\\/g, '').replace(/\n\n/g, '').replace(/\*\*/g, '');
+        const result = await generateContent(text1, audio1);
+        const response = result.candidates[0].content.parts[0].text.replace(/\*/g, '').replace(/\\n/g, '').replace(/\\/g, '').replace(/\n\n/g, '').replace(/\*\*/g, '');
 
         res.status(200).json({
             'status': 'success',
